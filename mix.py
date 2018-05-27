@@ -31,40 +31,74 @@
 
 import json
 import random
+import logging
 import os
+import os.path
+from shared import validate_settings
+from shared import get_config_values
+from shared import get_settings
+from shared import get_command_line_arguments
+from shared import configure_logging
 
 try:
     # For Python 3.0 and later
     from configparser import SafeConfigParser
+    from configparser import Error
+    from configparser import MissingSectionHeaderError
 except ImportError:
     # Fall back for Python 2.7
     from ConfigParser import SafeConfigParser
+    from ConfigParser import Error
+    from ConfigParser import MissingSectionHeaderError
 
-config = SafeConfigParser()
-config.read('settings.cfg')
-quantity = int(config.get('DEFAULT', 'quantity'))
-max_trailers = int(config.get('DEFAULT', 'max_trailers'))
-json_file = str(config.get('DEFAULT', 'json_file'))
-selected_file = str(config.get('DEFAULT', 'selected_file'))
-output_file = str(config.get('DEFAULT', 'output_file'))
 
-# Get downloaded trailers
-trailers = json.load(open(json_file))
+def main():
+    # Main script
 
-# Randomly select trailers
-selected_trailers = random.sample(range(1,max_trailers+1),quantity)
+    # Set default log level so we can log messages generated while loading the settings.
+    configure_logging('')
 
-input_video = []
+    try:
+        settings = get_settings()
+    except MissingSectionHeaderError:
+        logging.error('Configuration file is missing a header section, ' +
+                      'try adding [DEFAULT] at the top of the file')
+        return
+    except (Error, ValueError) as ex:
+        logging.error("Configuration error: %s", ex)
+        return
 
-for x in selected_trailers:
-    input_video.append(trailers[str(x)])
+    configure_logging(settings['output_level'])
 
-# Set selected trailers
-with open(selected_file, "w") as f:
-    for i in input_video:
-        item = i.replace("'", "\\'")
-        f.write('file \'' + item + '\'' + os.linesep)
-f.close
+    logging.debug("Using configuration values:")
+    logging.debug("Loaded configuration from %s", settings['config_path'])
+    for name in sorted(settings):
+        if name != 'config_path':
+            logging.debug("    %s: %s", name, settings[name])
 
-# Convert selected trailers into one video
-os.system('/usr/local/bin/ffmpeg -loglevel panic -y -f concat -safe 0 -i '+selected_file+' -metadata title=Coming\ Soon -c copy '+output_file)
+    logging.debug("")
+
+    # Get downloaded trailers
+    trailers = json.load(open(settings['json_file']))
+
+    # Randomly select trailers
+    selected_trailers = random.sample(range(1,int(settings['max_trailers'])+1),int(settings['quantity']))
+
+    input_video = []
+
+    for x in selected_trailers:
+        input_video.append(trailers[str(x)])
+
+    # Set selected trailers
+    with open(settings['selected_file'], "w") as f:
+        for i in input_video:
+            item = i.replace("'", "\\'")
+            f.write('file \'' + item + '\'' + os.linesep)
+    f.close
+
+    # Convert selected trailers into one video
+    os.system('/usr/local/bin/ffmpeg -loglevel panic -y -f concat -safe 0 -i '+settings['selected_file']+' -metadata title=Coming\ Soon -c copy '+settings['output_file'])
+
+# Run the script
+if __name__ == '__main__':
+    main()
