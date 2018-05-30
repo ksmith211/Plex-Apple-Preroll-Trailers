@@ -17,6 +17,7 @@ This goes without saying but if you aren't already using Plex to organize and pl
 In order to use these scripts, you'll need to be running Python 2.x or higher.
 
 **ffmpeg**
+
 You'll also need to have ffmpeg installed in order to convert videos into a uniform size and mix them into one video file for Plex (https://www.ffmpeg.org/). This is easy to install with Homebrew.
 
 ```
