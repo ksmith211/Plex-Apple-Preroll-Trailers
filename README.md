@@ -96,3 +96,6 @@ Please note that it will take a long time to download and convert all of the vid
 
 Enjoy!
 
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
