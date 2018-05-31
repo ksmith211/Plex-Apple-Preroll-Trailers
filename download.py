@@ -374,11 +374,11 @@ def main():
             if count >= (int(settings['max_trailers'])):
                 break
 
-        # Create json file of downloaded trailers for mix.py
-        create_json_file(settings['list_file'], settings['download_dir'], settings['json_file'])
-
         # Delete old trailers
         delete_old_trailers(trailers, settings['list_file'], settings['download_dir'])
+
+        # Create json file of downloaded trailers for mix.py
+        create_json_file(settings['list_file'], settings['download_dir'], settings['json_file'])
 
 
 # Run the script
