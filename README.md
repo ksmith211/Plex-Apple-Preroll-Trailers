@@ -47,10 +47,10 @@ Next, open the crontab.
 crontab -e
 ```
 
-In this file you need to add a job for downloading new trailers once per week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30. The following example will download trailers every Friday at 4:30am. If you would like to customize the frequency and don't feel comfortable with scheduling jobs, you can use https://crontab.guru. Be sure to change the path to the directory you put the scripts in and save the file when you're done.
+In this file you need to add a job for downloading new trailers once per week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30. The following example will download trailers every Friday at 3:30am. If you would like to customize the frequency and don't feel comfortable with scheduling jobs, you can use https://crontab.guru. Be sure to change the path to the directory you put the scripts in and save the file when you're done.
 
 ```
-30 4 * * fri /path/to/scripts/download.sh
+30 3 * * fri cd /path/to/scripts && ./download.sh
 ```
 
 **Mix Script**
@@ -72,7 +72,7 @@ crontab -e
 Add an entry for mix.sh. This example will run the script every 8 hours but you can customize the frequency to whatever your preference is. Be sure to change the path to the directory you put the scripts in and save the file when you're done.
 
 ```
-0 */8 * * * /path/to/scripts/mix.sh
+0 */8 * * * cd /path/to/scripts && ./mix.sh
 ```
 
 **Plex Media Server**
@@ -85,7 +85,7 @@ Now you need to tell Plex to use the video file that mix.sh generates as the pre
 
 ## Running For The First Time
 
-Since you just set up the scripts for the first time, you don't have any trailers downloaded yet and I doubt you want to wait until the next time 4:30am rolls around on a Friday :). Therefore, you need to manually run the download script one time. Via the command line, navigate to the directory you put the scripts in and run the download.sh file.
+Since you just set up the scripts for the first time, you don't have any trailers downloaded yet and I doubt you want to wait until the next time 3:30am rolls around on a Friday :). Therefore, you need to manually run the download script one time. Via the command line, navigate to the directory you put the scripts in and run the download.sh file.
 
 ```
 cd /path/to/scripts
