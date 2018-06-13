@@ -60,11 +60,11 @@ Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Th
 
 The next step is to set up the script for randomly mixing the trailers into one video file so that they can be played as a preroll trailer in Plex.
 
-_If you want to use Tautulli (recommended):_**
+_If you want to use Tautulli (recommended):_
 
 Open up Tautulli and go to Settings. In the "Notifications Agents" section, create a new script. For the "Script Folder", add `/path/to/scripts` (change the path to the directory you put the scripts in) and for the "Script File" use `./mix.py`. Add a description and then switch over to the "Triggers" tab and check "Playback Start." Next, go to the "Conditions" tab to tell Tautulli when the script should be fired. I am using a condition for when "Media Type" is "movie." Save it and you're all done with Tautulli.
 
-_If you don't want to use Tautulli (optional):_**
+_If you don't want to use Tautulli (optional):_
 
 **macOS or Linux**
 
