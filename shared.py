@@ -53,9 +53,6 @@ def validate_settings(settings):
         if setting not in settings:
             raise ValueError("cannot find value for '{}'".format(setting))
 
-    if not os.path.isfile(settings['ffmpeg_path']):
-        raise ValueError('the ffmpeg path must be a valid path')
-
     if not os.path.exists(settings['main_dir']):
         raise ValueError('the main directory must be a valid path')
 
