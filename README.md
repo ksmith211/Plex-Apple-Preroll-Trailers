@@ -38,7 +38,7 @@ Next, take a look at the other options in settings.cfg. Most of these settings d
 
 Next, you need to schedule a job for downloading trailers each week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30.
 
-*macOS or Linux*
+**macOS or Linux**
 
 Open the crontab.
 
@@ -52,7 +52,7 @@ Add the following example to download trailers every Friday at 3:30am. If you wo
 30 3 * * fri /path/to/python /path/to/scripts/download.py 2>&1
 ```
 
-*Windows*
+**Windows**
 
 Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Then click "Create Basic Task Scheduler" and enter a name and description. Then set the task to run weekly and choose a day and time. For the action, choose "Start a program." For the "Program/script" add the location of your python installation (example: `C:\python27\python`). For the "Arguments" add the full path of the download.py script in double quotes (example: `"C:\Users\username\Trailers\download.py"`). Click "Finish" and you're all set.
 
@@ -60,13 +60,13 @@ Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Th
 
 The next step is to set up the script for randomly mixing the trailers into one video file so that they can be played as a preroll trailer in Plex.
 
-**If you want to use Tautulli (recommended):**
+_If you want to use Tautulli (recommended):_**
 
 Open up Tautulli and go to Settings. In the "Notifications Agents" section, create a new script. For the "Script Folder", add `/path/to/scripts` (change the path to the directory you put the scripts in) and for the "Script File" use `./mix.py`. Add a description and then switch over to the "Triggers" tab and check "Playback Start." Next, go to the "Conditions" tab to tell Tautulli when the script should be fired. I am using a condition for when "Media Type" is "movie." Save it and you're all done with Tautulli.
 
-**If you don't want to use Tautulli (optional):**
+_If you don't want to use Tautulli (optional):_**
 
-*macOS or Linux*
+**macOS or Linux**
 
 Open the crontab again.
 
@@ -80,7 +80,7 @@ Add an entry for mix.py. This example will run the script every 8 hours but you 
 0 */8 * * * /path/to/python /path/to/scripts/mix.py 2>&1
 ```
 
-*Windows*
+**Windows**
 
 Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Then click "Create Basic Task Scheduler" and enter a name and description. Then set the task to run daily and choose a time. For the action, choose "Start a program." For the "Program/script" add the location of your python installation (example: `C:\python27\python`). For the "Arguments" add the full path of the mix.py script in double quotes (example: `"C:\Users\username\Trailers\mix.py"`). Click "Finish" and you're all set.
 
