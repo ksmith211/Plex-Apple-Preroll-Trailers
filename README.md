@@ -47,10 +47,10 @@ Next, open the crontab.
 crontab -e
 ```
 
-In this file you need to add a job for downloading new trailers once per week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30. The following example will download trailers every Friday at 3:30am. If you would like to customize the frequency and don't feel comfortable with scheduling jobs, you can use https://crontab.guru. Be sure to change the path to the directory you put the scripts in and save the file when you're done.
+In this file you need to add a job for downloading new trailers once per week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30. The following example will download trailers every Friday at 3:30am. If you would like to customize the frequency and don't feel comfortable with scheduling jobs, you can use https://crontab.guru. Be sure to change the paths to python and download.py to wherever they are located on your machine and save the file when you're done.
 
 ```
-30 3 * * fri cd /path/to/scripts && ./download.sh
+30 3 * * fri /path/to/python /path/to/scripts/download.py 2>&1
 ```
 
 **Mix Script**
@@ -59,7 +59,7 @@ The next step is to set up the script for randomly mixing the trailers into one 
 
 *If you want to use Tautulli (recommended):*
 
-Open up Tautulli and go to Settings. In the "Notifications Agents" section, create a new script. For the "Script Folder", add `/path/to/scripts` (change the path to the directory you put the scripts in) and for the "Script File" use `./mix.sh`. Add a description and then switch over to the "Triggers" tab and check "Playback Start." Next, go to the "Conditions" tab to tell Tautulli when the script should be fired. I am using a condition for when "Media Type" is "movie." Save it and you're all done with Tautulli.
+Open up Tautulli and go to Settings. In the "Notifications Agents" section, create a new script. For the "Script Folder", add `/path/to/scripts` (change the path to the directory you put the scripts in) and for the "Script File" use `./mix.py`. Add a description and then switch over to the "Triggers" tab and check "Playback Start." Next, go to the "Conditions" tab to tell Tautulli when the script should be fired. I am using a condition for when "Media Type" is "movie." Save it and you're all done with Tautulli.
 
 *If you don't want to use Tautulli (optional):*
 
@@ -69,10 +69,10 @@ Open the crontab again.
 crontab -e
 ```
 
-Add an entry for mix.sh. This example will run the script every 8 hours but you can customize the frequency to whatever your preference is. Be sure to change the path to the directory you put the scripts in and save the file when you're done.
+Add an entry for mix.py. This example will run the script every 8 hours but you can customize the frequency to whatever your preference is. Be sure to change the paths to python and mix.py to wherever they are located on your machine and save the file when you're done.
 
 ```
-0 */8 * * * cd /path/to/scripts && ./mix.sh
+0 */8 * * * /path/to/python /path/to/scripts/mix.py 2>&1
 ```
 
 **Plex Media Server**
@@ -85,11 +85,11 @@ Now you need to tell Plex to use the video file that mix.sh generates as the pre
 
 ## Running For The First Time
 
-Since you just set up the scripts for the first time, you don't have any trailers downloaded yet and I doubt you want to wait until the next time 3:30am rolls around on a Friday :). Therefore, you need to manually run the download script one time. Via the command line, navigate to the directory you put the scripts in and run the download.sh file.
+Since you just set up the scripts for the first time, you don't have any trailers downloaded yet and I doubt you want to wait until the next time 3:30am rolls around on a Friday :). Therefore, you need to manually run the scripts one time. Via the command line, navigate to the directory you put the scripts in and run the download.py script. Once it finishes, run the mix.py script.
 
 ```
-cd /path/to/scripts
-./download.sh
+/path/to/python download.py
+/path/to/python mix.py
 ```
 
 Please note that it will take a long time to download and convert all of the videos for the first time but future runs will be much faster since the script will never re-download any trailer that has already been downloaded. If you would like to watch what's happening, you can set the "output_level" to "debug" in settings.cfg before running it, but this is not necessary.
