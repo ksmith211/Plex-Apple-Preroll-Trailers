@@ -169,7 +169,6 @@ def delete_old_trailers(trailers, list_file, download_dir):
     downloaded_files = get_downloaded_files(list_file)
     for item in downloaded_files:
         if item not in trailers:
-            item = item.replace(' ', '\ ')
             logging.debug("*** File no longer necessary. Deleting "+item)
             os.remove(download_dir+'/'+item)
     write_downloaded_files(trailers, list_file)
