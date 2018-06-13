@@ -8,33 +8,33 @@ These instructions will help you set up your Plex Media Server to download new t
 
 ## Prerequisites
 
-###Plex Media Server###
+### Plex Media Server
 
 This goes without saying but if you aren't already using Plex to organize and play your media files, you're probably in the wrong place.
 
-###Python###
+### Python
 
 In order to use these scripts, you'll need to be running Python 2.7 or higher.
 
-###ffmpeg###
+### ffmpeg
 
 You'll also need to have ffmpeg installed in order to convert videos into a uniform size and mix them into one video file for Plex (https://www.ffmpeg.org/).
 
-###Tautulli (recommended)###
+### Tautulli (recommended)
 
 If you want to randomly mix the trailers each time a movie is played in Plex, you'll need to have Tautulli installed on your Plex Media Server (https://github.com/Tautulli/Tautulli). It is possible to avoid this step if you would prefer to just mix the trailers a few times a day via a cron job but, let's face it, that isn't nearly as awesome. Plus, if you found your way here, you'll probably enjoy all of the great things Tautulli has to offer as well.
 
 ## Installation
 
-###Clone###
+### Clone
 
 The first step is to clone the repository somewhere onto your Plex Media Server. It doesn't really matter where but you'll need to add the name of the directory to settings.cfg under "main_dir" once you've finished.
 
-###Settings###
+### Settings
 
 Next, take a look at the other options in settings.cfg. Most of these settings don't really need to be altered but the important ones are "ffmpeg_path" (the path to ffmpeg), "main_dir" (the directory the scripts are located in), "max_trailers" (the maximum number of trailers that should be downloaded to your server at any given time), "quantity" (the number of trailers that should be mixed and shown before each movie), and "resolution" (the resolution you would like the trailers to be downloaded in).
 
-###Download Script###
+### Download Script
 
 Next, you need to schedule a job for downloading trailers each week. You can tell the script to download new trailers as often as you would like but I find that once per week is totally sufficient if you have "max_trailers" set to a decent value like 30.
 
@@ -56,7 +56,7 @@ Add the following example to download trailers every Friday at 3:30am. If you wo
 
 Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Then click "Create Basic Task Scheduler" and enter a name and description. Then set the task to run weekly and choose a day and time. For the action, choose "Start a program." For the "Program/script" add the location of your python installation (example: `C:\python27\python`). For the "Arguments" add the full path of the download.py script in double quotes (example: `"C:\Users\username\Trailers\download.py"`). Click "Finish" and you're all set.
 
-###Mix Script###
+### Mix Script
 
 The next step is to set up the script for randomly mixing the trailers into one video file so that they can be played as a preroll trailer in Plex.
 
@@ -84,7 +84,7 @@ Add an entry for mix.py. This example will run the script every 8 hours but you 
 
 Open the Control Panel and navigate to Administrative Tools > Task Scheduler. Then click "Create Basic Task Scheduler" and enter a name and description. Then set the task to run daily and choose a time. For the action, choose "Start a program." For the "Program/script" add the location of your python installation (example: `C:\python27\python`). For the "Arguments" add the full path of the mix.py script in double quotes (example: `"C:\Users\username\Trailers\mix.py"`). Click "Finish" and you're all set.
 
-###Plex Media Server###
+### Plex Media Server
 
 Now you need to tell Plex to use the video file that mix.sh generates as the preroll trailer. Open Plex and navigate to Settings > Server > Extras and add the location of the video file to "Cinema Trailers pre-roll video." If you didn't change the name of the "output_file" in settings.cfg, you can use the example below. Be sure to change the path to the directory you put the scripts in.
 
