@@ -241,6 +241,7 @@ def convert(trailer_file_name, destdir, res, ffmpeg_path):
 
     logging.debug("  Converting")
     os.system(ffmpeg_path+' -loglevel panic -i "'+destdir+'/'+trailer_file_name+'" -vf "scale='+target_width+':'+target_height+':force_original_aspect_ratio=decrease,pad='+target_width+':'+target_height+':(ow-iw)/2:(oh-ih)/2" -c:v libx264 -c:a aac -r 24 "'+destdir+'/.output.mov"')
+    os.remove(destdir+'/'+trailer_file_name)
     os.rename(destdir+'/.output.mov', destdir+'/'+trailer_file_name)
 
 
