@@ -171,7 +171,7 @@ def delete_old_trailers(trailers, list_file, download_dir):
         if item not in trailers:
             item = item.replace(' ', '\ ')
             logging.debug("*** File no longer necessary. Deleting "+item)
-            os.system('rm '+download_dir+'/'+item)
+            os.remove(download_dir+'/'+item)
     write_downloaded_files(trailers, list_file)
 
 
@@ -228,9 +228,8 @@ def download_trailer_file(url, destdir, filename):
         return
 
 
-def convert(trailer_file_name, destdir, res):
-    # Check resolution and convert video if it does not conform to correct size
-    # Also converts all videos to x264 at 24fps and aac
+def convert(trailer_file_name, destdir, res, ffmpeg_path):
+    # Convert video resolution and use x264 at 24fps and aac
     if res == '480':
         target_width = '848'
         target_height = '480'
@@ -241,21 +240,12 @@ def convert(trailer_file_name, destdir, res):
         target_width = '1920'
         target_height = '1080'
 
-    # Check if dimensions match target sizes
-    size = os.popen('/usr/local/bin/ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "'+destdir+'/'+trailer_file_name+'"').read()
-    size = str(size).rstrip()
-    dimensions = size.split('x')
-    if (dimensions[0] != target_width or dimensions[1] != target_height):
-        logging.debug("  Incompatible resolution. Converting")
-        os.system('/usr/local/bin/ffmpeg -loglevel panic -i "'+destdir+'/'+trailer_file_name+'" -vf "scale='+target_width+':'+target_height+':force_original_aspect_ratio=decrease,pad='+target_width+':'+target_height+':(ow-iw)/2:(oh-ih)/2" -c:v libx264 -c:a aac -r 24 "'+destdir+'/.output.mov"')
-        os.system('mv "'+destdir+'/.output.mov" "'+destdir+'/'+trailer_file_name+'"')
-    else:
-        logging.debug("  Converting")
-        os.system('/usr/local/bin/ffmpeg -loglevel panic -i "'+destdir+'/'+trailer_file_name+'" -c:v libx264 -c:a aac -r 24 "'+destdir+'/.output.mov"')
-        os.system('mv "'+destdir+'/.output.mov" "'+destdir+'/'+trailer_file_name+'"')
+    logging.debug("  Converting")
+    os.system(ffmpeg_path+' -loglevel panic -i "'+destdir+'/'+trailer_file_name+'" -vf "scale='+target_width+':'+target_height+':force_original_aspect_ratio=decrease,pad='+target_width+':'+target_height+':(ow-iw)/2:(oh-ih)/2" -c:v libx264 -c:a aac -r 24 "'+destdir+'/.output.mov"')
+    os.rename(destdir+'/.output.mov', destdir+'/'+trailer_file_name)
 
 
-def download_trailers_from_page(page_url, dl_list_path, res, destdir, types):
+def download_trailers_from_page(page_url, dl_list_path, res, destdir, types, ffmpeg_path):
     # Downloads trailer from page URL
     logging.debug('Checking for files at ' + page_url)
     trailer_urls = get_trailer_file_urls(page_url, res, types)
@@ -268,7 +258,7 @@ def download_trailers_from_page(page_url, dl_list_path, res, destdir, types):
         if trailer_file_name not in downloaded_files:
             logging.info('Downloading ' + trailer_url['type'] + ': ' + trailer_file_name)
             download_trailer_file(trailer_url['url'], destdir, trailer_file_name)
-            convert(trailer_file_name, destdir, res)
+            convert(trailer_file_name, destdir, res, ffmpeg_path)
             record_downloaded_file(trailer_file_name, dl_list_path)
         else:
             logging.debug('*** File already downloaded, skipping: ' + trailer_file_name)
@@ -329,7 +319,8 @@ def main():
             settings['list_file'],
             settings['resolution'],
             settings['download_dir'],
-            settings['video_types']
+            settings['video_types'],
+            settings['ffmpeg_path']
         )
 
     else:
@@ -348,7 +339,8 @@ def main():
                 settings['list_file'],
                 settings['resolution'],
                 settings['download_dir'],
-                settings['video_types']
+                settings['video_types'],
+                settings['ffmpeg_path']
             )
             if download:
                 trailers.append(download)
@@ -366,7 +358,8 @@ def main():
                 settings['list_file'],
                 settings['resolution'],
                 settings['download_dir'],
-                settings['video_types']
+                settings['video_types'],
+                settings['ffmpeg_path']
             )
             if download:
                 trailers.append(download)

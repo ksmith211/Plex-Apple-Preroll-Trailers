@@ -47,11 +47,14 @@ def validate_settings(settings):
     valid_video_types = ['single_trailer', 'trailers', 'all']
     valid_output_levels = ['debug', 'downloads', 'error']
 
-    required_settings = ['main_dir', 'download_dir', 'list_file', 'json_file', 'selected_file', 'output_file', 'max_trailers', 'quantity', 'resolution', 'video_types', 'output_level']
+    required_settings = ['ffmpeg_path', 'main_dir', 'download_dir', 'list_file', 'json_file', 'selected_file', 'output_file', 'max_trailers', 'quantity', 'resolution', 'video_types', 'output_level']
 
     for setting in required_settings:
         if setting not in settings:
             raise ValueError("cannot find value for '{}'".format(setting))
+
+    if not os.path.exists(settings['ffmpeg_path']):
+        raise ValueError('the ffmpeg path must be a valid path')
 
     if not os.path.exists(settings['main_dir']):
         raise ValueError('the main directory must be a valid path')

@@ -37,7 +37,7 @@ The first step is to clone the repository somewhere onto your Plex Media Server.
 
 **Settings**
 
-Next, take a look at the other options in settings.cfg. Most of these settings don't really need to be altered but the important ones are "main_dir" (the directory the scripts are located in), "max_trailers" (the maximum number of trailers that should be downloaded to your server at any given time), "quantity" (the number of trailers that should be mixed and shown before each movie), and "resolution" (the resolution you would like the trailers to be downloaded in).
+Next, take a look at the other options in settings.cfg. Most of these settings don't really need to be altered but the important ones are "python_path" (the path to python), "ffmpeg_path" (the path to ffmpeg), "main_dir" (the directory the scripts are located in), "max_trailers" (the maximum number of trailers that should be downloaded to your server at any given time), "quantity" (the number of trailers that should be mixed and shown before each movie), and "resolution" (the resolution you would like the trailers to be downloaded in).
 
 **Download Script**
 

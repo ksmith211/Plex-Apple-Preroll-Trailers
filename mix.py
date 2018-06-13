@@ -89,7 +89,7 @@ def main():
     for x in selected_trailers:
         input_video.append(trailers[str(x)])
 
-    # Set selected trailers
+    # Set selected trailers in temp file
     with open(settings['selected_file'], "w") as f:
         for i in input_video:
             item = i.replace("'", "\\'")
@@ -97,7 +97,10 @@ def main():
     f.close
 
     # Convert selected trailers into one video
-    os.system('/usr/local/bin/ffmpeg -loglevel panic -y -f concat -safe 0 -i '+settings['selected_file']+' -metadata title=Coming\ Soon -c copy '+settings['output_file'])
+    os.system(settings['ffmpeg_path']+' -loglevel panic -y -f concat -safe 0 -i '+settings['selected_file']+' -metadata title=Coming\ Soon -c copy '+settings['output_file'])
+
+    # Remove temp file
+    os.remove(settings['selected_file'])
 
 # Run the script
 if __name__ == '__main__':

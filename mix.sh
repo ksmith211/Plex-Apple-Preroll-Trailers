@@ -3,7 +3,10 @@
 # Exit on error
 set -e
 
+# Get python path
+python_path=$(sed -n 's/^python_path=//p' settings.cfg)
+
 # Mix trailers
-/usr/bin/python mix.py
+"$python_path" mix.py
 
 exit
