@@ -94,10 +94,12 @@ def main():
         for i in input_video:
             item = i.replace("'", "\\'")
             f.write('file \'' + item + '\'' + os.linesep)
+            # TODO: Add a random "feature_presentation clip to the end of the ffmpeg  concatenation
+        if(settings['feature_presentation']):
+            f.write('file \'' + settings['feature_presentation'] + '\'' + os.linesep)
     f.close
-
     # Convert selected trailers into one video
-    os.system(settings['ffmpeg_path']+' -loglevel panic -y -f concat -safe 0 -i '+settings['selected_file']+' -c copy '+settings['output_file'])
+    os.system(settings['ffmpeg_path']+' -loglevel panic -y -f concat -safe 0 -i '+ settings['selected_file']+' -c copy '+settings['output_file'])
 
     # Remove temp file
     os.remove(settings['selected_file'])
